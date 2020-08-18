@@ -31,34 +31,211 @@ const namespaces = [
   },
 ]
 
-const openAItypesMap = {
-  string: 'string',
-  uint: 'string',
-  uint64: 'string',
-  int: 'integer',
-  integer: 'integer',
-  bool: 'boolean',
+const openAPItypesMap = {
+  bool: { type: 'boolean' },
+  int: { type: 'integer' },
+  string: { type: 'string' },
+  uint: { type: 'string' },
+  uint64: { type: 'string' },
+  password: { type: 'string', format: 'password' },
+
+  // Special types
+  '*time.Time': { type: 'string', format: 'date-time' },
+  'json.RawMessage': { type: 'string', format: 'json' },
+  'sqlxTypes.JSONText': { type: 'string', format: 'json' },
+  '*multipart.FileHeader': { type: 'string', format: 'binary' },
+  'types.ChannelMembershipPolicy': { type: 'string' },
+  'types.UserKind': { type: 'string '},
+  'ProcedureArg': {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string'
+      },
+      value: {
+        type: 'string'
+      }
+    }
+  },
 }
 
-const uniqueTypes = new Set()
+const openAPIschemas = {
+  'types.RecordValueSet': {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        value: {
+          type: 'string'
+        }
+      }
+    }
+  },
+  'types.RecordBulkSet': {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        recordID: {
+          type: 'string',
+          format: 'uuid'
+        },
+        moduleID: {
+          type: 'string',
+          format: 'uuid'
+        },
+        namespaceID: {
+          type: 'string',
+          format: 'uuid'
+        },
+        values: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string'
+              },
+              value: {
+                type: 'string'
+              }
+            }
+          }
+        },
+        createdAt: {
+          type: 'string',
+          format: 'date-time',
+        },
+        updatedAt: {
+          type: 'string',
+          format: 'date-time'
+        },
+        deletedAt: {
+          type: 'string',
+          format: 'date-time'
+        },
+        ownedBy: {
+          type: 'string',
+          format: 'uuid'
+        },
+        createdBy: {
+          type: 'string',
+          format: 'uuid'
+        },
+        updatedBy: {
+          type: 'string',
+          format: 'uuid'
+        },
+        deletedBy: {
+          type: 'string',
+          format: 'uuid'
+        },
+      }
+    }
+  },
+  'types.SettingValueSet': {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        value: {
+          type: 'string'
+        }
+      }
+    }
+  },
+  'permissions.RuleSet': {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        roleID: {
+          type: 'string',
+          format: 'uuid'
+        },
+        resource: {
+          type: 'string'
+        },
+        operation: {
+          type: 'string'
+        },
+        access: {
+          type: 'string'
+        }
+      }
+    }
+  },
+  'types.ModuleFieldSet': {
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        fieldID: {
+          type: 'string',
+          format: 'uuid'
+        },
+        name: {
+          type: 'string'
+        },
+        kind: {
+          type: 'string'
+        },
+        label: {
+          type: 'string'
+        },
+        defaultValue: {
+          type: 'array',
+          items: {
+            type: 'string'
+          }
+        },
+        maxLength: {
+          type: 'integer'
+        },
+        isRequired: {
+          type: 'boolean'
+        },
+        isPrivate: {
+          type: 'boolean'
+        },
+        isMulti: {
+          type: 'boolean'
+        },
+        isSystem: {
+          type: 'boolean'
+        },
+        options: {
+          type: 'object'
+        }
+      }
+    }
+  }
+}
 
 function getType (type) {
-  return openAItypesMap[type] || 'string'
+  return openAPItypesMap[type] || openAPItypesMap['string'] 
 }
 
-function getSchema (type) {
+function getSchema (type, name) {
+  if (name === 'password') {
+    type = 'password'
+  }
+
   if (type.includes('[]')) {
     return {
       type: 'array',
-      items: {
-        type: getType(type.split('[]')[1])
-      }
+      items: getType(type.split('[]')[1])
     }
-  } else {
-    return { 
-      type: getType(type)
-    }
+  } else if (openAPIschemas[type]) {
+    return openAPIschemas[type]
   }
+  return getType(type)
 } 
 
 namespaces.forEach(({ path, namespace, className }) => {
@@ -145,7 +322,7 @@ namespaces.forEach(({ path, namespace, className }) => {
                   name: p.name,
                   description: p.title,
                   required: p.required || false,
-                  schema: getSchema(p.type)
+                  schema: getSchema(p.type, p.name)
                 }
               })
             )
@@ -155,7 +332,7 @@ namespaces.forEach(({ path, namespace, className }) => {
 
             v.map(p => {
               properties[p.name] = {
-                ...getSchema(p.type),
+                ...getSchema(p.type, p.name),
                 description: p.title
               }
 
@@ -194,7 +371,7 @@ namespaces.forEach(({ path, namespace, className }) => {
                   name: p.name,
                   description: p.title,
                   required: true,
-                  schema: getSchema(p.type)
+                  schema: getSchema(p.type, p.name)
                 }
               })
             )

@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "author": "Jože Fortun <joze.fortun@gmail.com>",
   "scripts": {
-    "convert": "node -r esm tools/convert.js"
+    "convert:yaml": "node -r esm tools/convert.js"
   },
   "devDependencies": {
     "esm": "^3.2.25",

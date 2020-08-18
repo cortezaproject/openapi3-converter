@@ -34,6 +34,7 @@ paths:
                   description: Enabled
                 meta:
                   type: string
+                  format: json
                   description: Meta data
               required:
                 - name
@@ -55,7 +56,7 @@ paths:
           name: namespaceID
           description: ID
           required: true
-          schema:
+          schema: &ref_1
             type: string
   '/namespace/{namespaceID}/trigger':
     post:
@@ -70,14 +71,13 @@ paths:
           name: namespaceID
           description: ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_1
+              properties: &ref_2
                 script:
                   type: string
                   description: Script to execute
@@ -86,7 +86,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_1
+              properties: *ref_2
   '/namespace/{namespaceID}/page/':
     post:
       tags:
@@ -100,7 +100,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_2
+              properties: &ref_3
                 selfID:
                   type: string
                   description: Parent Page ID
@@ -124,20 +124,20 @@ paths:
                   description: Visible in navigation
                 blocks:
                   type: string
+                  format: json
                   description: Blocks JSON
               required:
                 - title
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_2
+              properties: *ref_3
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/page/{pageID}':
     delete:
       tags:
@@ -151,14 +151,12 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: pageID
           description: Page ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/page/tree':
     get:
       tags:
@@ -172,8 +170,7 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/page/{selfID}/reorder':
     post:
       tags:
@@ -187,23 +184,21 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: selfID
           description: Parent page ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_3
+              properties: &ref_4
                 pageIDs:
                   type: array
-                  items:
+                  items: &ref_9
                     type: string
                   description: Page ID order
               required:
@@ -211,7 +206,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_3
+              properties: *ref_4
   '/namespace/{namespaceID}/page/{pageID}/attachment':
     post:
       tags:
@@ -225,29 +220,28 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: pageID
           description: Page ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_4
+              properties: &ref_5
                 upload:
                   type: string
+                  format: binary
                   description: File to upload
               required:
                 - upload
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_4
+              properties: *ref_5
   '/namespace/{namespaceID}/page/{pageID}/trigger':
     post:
       tags:
@@ -261,20 +255,18 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: pageID
           description: Page ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_5
+              properties: &ref_6
                 script:
                   type: string
                   description: Script to execute
@@ -283,7 +275,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_5
+              properties: *ref_6
   '/namespace/{namespaceID}/module/':
     post:
       tags:
@@ -297,7 +289,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_6
+              properties: &ref_7
                 name:
                   type: string
                   description: Module Name
@@ -305,10 +297,39 @@ paths:
                   type: string
                   description: Module handle
                 fields:
-                  type: string
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      fieldID:
+                        type: string
+                        format: uuid
+                      name:
+                        type: string
+                      kind:
+                        type: string
+                      label:
+                        type: string
+                      defaultValue:
+                        type: array
+                        items:
+                          type: string
+                      maxLength:
+                        type: integer
+                      isRequired:
+                        type: boolean
+                      isPrivate:
+                        type: boolean
+                      isMulti:
+                        type: boolean
+                      isSystem:
+                        type: boolean
+                      options:
+                        type: object
                   description: Fields JSON
                 meta:
                   type: string
+                  format: json
                   description: Module meta data
               required:
                 - name
@@ -317,14 +338,13 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_6
+              properties: *ref_7
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}':
     delete:
       tags:
@@ -338,14 +358,12 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/trigger':
     post:
       tags:
@@ -359,20 +377,18 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_7
+              properties: &ref_8
                 script:
                   type: string
                   description: Script to execute
@@ -381,7 +397,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_7
+              properties: *ref_8
   '/namespace/{namespaceID}/module/{moduleID}/record/report':
     get:
       tags:
@@ -395,32 +411,27 @@ paths:
           name: metrics
           description: 'Metrics (eg: ''SUM(money), MAX(calls)'')'
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: dimensions
           description: 'Dimensions (eg: ''DATE(foo), status'')'
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: filter
           description: 'Filter (eg: ''DATE(foo) > 2010'')'
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/record/':
     delete:
       tags:
@@ -434,11 +445,10 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_8
+              properties: &ref_10
                 recordIDs:
                   type: array
-                  items:
-                    type: string
+                  items: *ref_9
                   description: IDs of records to delete
                 truncate:
                   type: boolean
@@ -448,20 +458,18 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_8
+              properties: *ref_10
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/record/import':
     post:
       tags:
@@ -475,29 +483,28 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_9
+              properties: &ref_11
                 upload:
                   type: string
+                  format: binary
                   description: File import
               required:
                 - upload
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_9
+              properties: *ref_11
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/record/import/{sessionID}':
     get:
       tags:
@@ -511,20 +518,17 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: sessionID
           description: Import session
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/record/export{filename}.{ext}':
     get:
       tags:
@@ -538,46 +542,39 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: filename
           description: Filename to use
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: ext
           description: Export format
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: filter
           description: Filtering condition
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: fields
           description: Fields to export
           required: true
           schema:
             type: array
-            items:
-              type: string
+            items: *ref_9
         - in: query
           name: timezone
           description: Convert times to this timezone
           required: false
-          schema:
-            type: string
+          schema: *ref_9
   '/namespace/{namespaceID}/module/{moduleID}/record/exec/{procedure}':
     post:
       tags:
@@ -591,35 +588,37 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: procedure
           description: Name of procedure to execute
           required: true
-          schema:
-            type: string
+          schema: *ref_9
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_10
+              properties: &ref_12
                 args:
                   type: array
                   items:
-                    type: string
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
                   description: Procedure arguments
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_10
+              properties: *ref_12
   '/namespace/{namespaceID}/module/{moduleID}/record/{recordID}':
     delete:
       tags:
@@ -633,20 +632,17 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: recordID
           description: Record ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/record/attachment':
     post:
       tags:
@@ -660,7 +656,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_11
+              properties: &ref_13
                 recordID:
                   type: string
                   description: Record ID
@@ -669,6 +665,7 @@ paths:
                   description: Field name
                 upload:
                   type: string
+                  format: binary
                   description: File to upload
               required:
                 - fieldName
@@ -676,20 +673,18 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_11
+              properties: *ref_13
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/module/{moduleID}/record/{recordID}/trigger':
     post:
       tags:
@@ -703,31 +698,35 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: recordID
           description: ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_12
+              properties: &ref_14
                 script:
                   type: string
                   description: Script to execute
                 values:
-                  type: string
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
                   description: Record values
               required:
                 - script
@@ -735,7 +734,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_12
+              properties: *ref_14
   '/namespace/{namespaceID}/module/{moduleID}/record/trigger':
     post:
       tags:
@@ -749,7 +748,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_13
+              properties: &ref_15
                 script:
                   type: string
                   description: Script to execute
@@ -758,20 +757,18 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_13
+              properties: *ref_15
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: moduleID
           description: Module ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/chart/':
     post:
       tags:
@@ -785,9 +782,10 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_14
+              properties: &ref_16
                 config:
                   type: string
+                  format: json
                   description: Chart JSON
                 name:
                   type: string
@@ -801,14 +799,13 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_14
+              properties: *ref_16
       parameters:
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/chart/{chartID}':
     delete:
       tags:
@@ -822,14 +819,12 @@ paths:
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: chartID
           description: Chart ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   /notification/email:
     post:
       tags:
@@ -843,16 +838,14 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_15
+              properties: &ref_17
                 to:
                   type: array
-                  items:
-                    type: string
+                  items: *ref_9
                   description: Email addresses
                 cc:
                   type: array
-                  items:
-                    type: string
+                  items: *ref_9
                   description: Email addresses
                 replyTo:
                   type: string
@@ -862,11 +855,11 @@ paths:
                   description: Email subject
                 content:
                   type: string
+                  format: json
                   description: Message content
                 remoteAttachments:
                   type: array
-                  items:
-                    type: string
+                  items: *ref_9
                   description: Remote files to attach to the email
               required:
                 - to
@@ -874,7 +867,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_15
+              properties: *ref_17
   '/namespace/{namespaceID}/attachment/{kind}/':
     get:
       tags:
@@ -888,74 +881,63 @@ paths:
           name: sign
           description: Signature
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: userID
           description: User ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
         - in: query
           name: pageID
           description: Filter attachments by page ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
         - in: query
           name: moduleID
           description: Filter attachments by module ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
         - in: query
           name: recordID
           description: Filter attachments by record ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
         - in: query
           name: fieldName
           description: Filter attachments by field name
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: limit
           description: Limit
           required: false
-          schema:
+          schema: &ref_18
             type: string
         - in: query
           name: offset
           description: Offset
           required: false
-          schema:
-            type: string
+          schema: *ref_18
         - in: query
           name: page
           description: Page number (1-based)
           required: false
-          schema:
-            type: string
+          schema: *ref_18
         - in: query
           name: perPage
           description: Returned items per page (default 50)
           required: false
-          schema:
-            type: string
+          schema: *ref_18
         - in: path
           name: kind
           description: Attachment kind
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}':
     delete:
       tags:
@@ -969,32 +951,27 @@ paths:
           name: kind
           description: Attachment kind
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: attachmentID
           description: Attachment ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: query
           name: sign
           description: Signature
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: userID
           description: User ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
   '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}/original/{name}':
     get:
       tags:
@@ -1008,43 +985,37 @@ paths:
           name: kind
           description: Attachment kind
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: attachmentID
           description: Attachment ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: name
           description: File name
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: sign
           description: Signature
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: userID
           description: User ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
         - in: query
           name: download
           description: Force file download
           required: false
-          schema:
+          schema: &ref_21
             type: boolean
   '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}/preview.{ext}':
     get:
@@ -1059,38 +1030,32 @@ paths:
           name: kind
           description: Attachment kind
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: namespaceID
           description: Namespace ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: attachmentID
           description: Attachment ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
         - in: path
           name: ext
           description: Preview extension/format
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: sign
           description: Signature
           required: false
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: userID
           description: User ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
   /permissions/:
     get:
       tags:
@@ -1112,8 +1077,7 @@ paths:
           name: resource
           description: Show only rules for a specific resource
           required: false
-          schema:
-            type: string
+          schema: *ref_9
   '/permissions/{roleID}/rules':
     patch:
       tags:
@@ -1127,23 +1091,34 @@ paths:
           name: roleID
           description: Role ID
           required: true
-          schema:
-            type: string
+          schema: *ref_1
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_16
+              properties: &ref_19
                 rules:
-                  type: string
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      roleID:
+                        type: string
+                        format: uuid
+                      resource:
+                        type: string
+                      operation:
+                        type: string
+                      access:
+                        type: string
                   description: List of permission rules to set
               required:
                 - rules
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_16
+              properties: *ref_19
   /settings/:
     patch:
       tags:
@@ -1157,9 +1132,16 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_17
+              properties: &ref_20
                 values:
-                  type: string
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      value:
+                        type: string
                   description: >-
                     Array of new settings: `[{ name: ..., value: ... }]`. Omit
                     value to remove setting
@@ -1168,7 +1150,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_17
+              properties: *ref_20
   '/settings/{key}':
     get:
       tags:
@@ -1182,14 +1164,12 @@ paths:
           name: key
           description: Setting key
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: query
           name: ownerID
           description: Owner ID
           required: false
-          schema:
-            type: string
+          schema: *ref_1
   /settings/current:
     get:
       tags:
@@ -1213,42 +1193,36 @@ paths:
           required: false
           schema:
             type: array
-            items:
-              type: string
+            items: *ref_9
         - in: query
           name: resourceTypes
           description: Filter by resource type
           required: false
           schema:
             type: array
-            items:
-              type: string
+            items: *ref_9
         - in: query
           name: eventTypes
           description: Filter by event type
           required: false
           schema:
             type: array
-            items:
-              type: string
+            items: *ref_9
         - in: query
           name: excludeInvalid
           description: Exclude scripts that can not be used (errors)
           required: false
-          schema:
-            type: boolean
+          schema: *ref_21
         - in: query
           name: excludeClientScripts
           description: Do not include client scripts
           required: false
-          schema:
-            type: boolean
+          schema: *ref_21
         - in: query
           name: excludeServerScripts
           description: Do not include server scripts
           required: false
-          schema:
-            type: boolean
+          schema: *ref_21
   '/automation/{bundle}-{type}.{ext}':
     get:
       tags:
@@ -1262,20 +1236,17 @@ paths:
           name: bundle
           description: Name of the bundle
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: type
           description: Bundle type
           required: true
-          schema:
-            type: string
+          schema: *ref_9
         - in: path
           name: ext
           description: Bundle extension
           required: true
-          schema:
-            type: string
+          schema: *ref_9
   /automation/trigger:
     post:
       tags:
@@ -1289,7 +1260,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_18
+              properties: &ref_22
                 script:
                   type: string
                   description: Script to execute
@@ -1298,4 +1269,4 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_18
+              properties: *ref_22
