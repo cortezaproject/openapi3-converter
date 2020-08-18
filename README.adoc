@@ -1,0 +1,8 @@
+# Corteza openAPI 3.0 converter
+
+Converts Corteza REST API YAML definition to openAPI 3.0. +
+Run with +
+`yarn convert <optional-path-to-corteza-server>`
+
+The script assumes that the `corteza-server` and `openapi3-converter` repositiories are in the same folder. +
+If not you can provide the path to the corteza-server.

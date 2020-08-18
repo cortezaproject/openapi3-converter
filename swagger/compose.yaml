@@ -1,0 +1,1301 @@
+openapi: 3.0.0
+info:
+  title: Corteza compose API
+  description: Corteza compose REST API definition
+  version: 1.0.0
+  contact:
+    email: contact@mail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /namespace/:
+    post:
+      tags:
+        - Namespaces
+      summary: Create namespace
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_0
+                name:
+                  type: string
+                  description: Name
+                slug:
+                  type: string
+                  description: Slug (url path part)
+                enabled:
+                  type: boolean
+                  description: Enabled
+                meta:
+                  type: string
+                  description: Meta data
+              required:
+                - name
+                - meta
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_0
+  '/namespace/{namespaceID}':
+    delete:
+      tags:
+        - Namespaces
+      summary: Delete namespace
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/trigger':
+    post:
+      tags:
+        - Namespaces
+      summary: 'Fire compose:namespace trigger'
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_1
+                script:
+                  type: string
+                  description: Script to execute
+              required:
+                - script
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_1
+  '/namespace/{namespaceID}/page/':
+    post:
+      tags:
+        - Pages
+      summary: Create page
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_2
+                selfID:
+                  type: string
+                  description: Parent Page ID
+                moduleID:
+                  type: string
+                  description: Module ID
+                title:
+                  type: string
+                  description: Title
+                handle:
+                  type: string
+                  description: Handle
+                description:
+                  type: string
+                  description: Description
+                weight:
+                  type: integer
+                  description: Page tree weight
+                visible:
+                  type: boolean
+                  description: Visible in navigation
+                blocks:
+                  type: string
+                  description: Blocks JSON
+              required:
+                - title
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_2
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/page/{pageID}':
+    delete:
+      tags:
+        - Pages
+      summary: Delete page
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pageID
+          description: Page ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/page/tree':
+    get:
+      tags:
+        - Pages
+      summary: 'Get page all (non-record) pages, hierarchically'
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/page/{selfID}/reorder':
+    post:
+      tags:
+        - Pages
+      summary: Reorder pages
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: selfID
+          description: Parent page ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_3
+                pageIDs:
+                  type: array
+                  items:
+                    type: string
+                  description: Page ID order
+              required:
+                - pageIDs
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_3
+  '/namespace/{namespaceID}/page/{pageID}/attachment':
+    post:
+      tags:
+        - Pages
+      summary: Uploads attachment to page
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pageID
+          description: Page ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_4
+                upload:
+                  type: string
+                  description: File to upload
+              required:
+                - upload
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_4
+  '/namespace/{namespaceID}/page/{pageID}/trigger':
+    post:
+      tags:
+        - Pages
+      summary: 'Fire compose:page trigger'
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pageID
+          description: Page ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_5
+                script:
+                  type: string
+                  description: Script to execute
+              required:
+                - script
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_5
+  '/namespace/{namespaceID}/module/':
+    post:
+      tags:
+        - Modules
+      summary: Create module
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_6
+                name:
+                  type: string
+                  description: Module Name
+                handle:
+                  type: string
+                  description: Module handle
+                fields:
+                  type: string
+                  description: Fields JSON
+                meta:
+                  type: string
+                  description: Module meta data
+              required:
+                - name
+                - fields
+                - meta
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_6
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}':
+    delete:
+      tags:
+        - Modules
+      summary: Delete module
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/trigger':
+    post:
+      tags:
+        - Modules
+      summary: 'Fire compose:module trigger'
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_7
+                script:
+                  type: string
+                  description: Script to execute
+              required:
+                - script
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_7
+  '/namespace/{namespaceID}/module/{moduleID}/record/report':
+    get:
+      tags:
+        - Records
+      summary: Generates report from module records
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: query
+          name: metrics
+          description: 'Metrics (eg: ''SUM(money), MAX(calls)'')'
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: dimensions
+          description: 'Dimensions (eg: ''DATE(foo), status'')'
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: filter
+          description: 'Filter (eg: ''DATE(foo) > 2010'')'
+          required: false
+          schema:
+            type: string
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/':
+    delete:
+      tags:
+        - Records
+      summary: Delete record row from module section
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_8
+                recordIDs:
+                  type: array
+                  items:
+                    type: string
+                  description: IDs of records to delete
+                truncate:
+                  type: boolean
+                  description: >-
+                    Remove ALL records of a specified module (pending
+                    implementation)
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_8
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/import':
+    post:
+      tags:
+        - Records
+      summary: Initiate record import session
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_9
+                upload:
+                  type: string
+                  description: File import
+              required:
+                - upload
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_9
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/import/{sessionID}':
+    get:
+      tags:
+        - Records
+      summary: Get import progress
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: sessionID
+          description: Import session
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/export{filename}.{ext}':
+    get:
+      tags:
+        - Records
+      summary: 'Exports records that match '
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: filename
+          description: Filename to use
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: ext
+          description: Export format
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: filter
+          description: Filtering condition
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Fields to export
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: timezone
+          description: Convert times to this timezone
+          required: false
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/exec/{procedure}':
+    post:
+      tags:
+        - Records
+      summary: Executes server-side procedure over one or more module records
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: procedure
+          description: Name of procedure to execute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_10
+                args:
+                  type: array
+                  items:
+                    type: string
+                  description: Procedure arguments
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_10
+  '/namespace/{namespaceID}/module/{moduleID}/record/{recordID}':
+    delete:
+      tags:
+        - Records
+      summary: Delete record row from module section
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: recordID
+          description: Record ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/attachment':
+    post:
+      tags:
+        - Records
+      summary: Uploads attachment and validates it against record field requirements
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_11
+                recordID:
+                  type: string
+                  description: Record ID
+                fieldName:
+                  type: string
+                  description: Field name
+                upload:
+                  type: string
+                  description: File to upload
+              required:
+                - fieldName
+                - upload
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_11
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/module/{moduleID}/record/{recordID}/trigger':
+    post:
+      tags:
+        - Records
+      summary: 'Fire compose:record trigger'
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: recordID
+          description: ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_12
+                script:
+                  type: string
+                  description: Script to execute
+                values:
+                  type: string
+                  description: Record values
+              required:
+                - script
+                - values
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_12
+  '/namespace/{namespaceID}/module/{moduleID}/record/trigger':
+    post:
+      tags:
+        - Records
+      summary: 'Fire compose:record trigger'
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_13
+                script:
+                  type: string
+                  description: Script to execute
+              required:
+                - script
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_13
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: moduleID
+          description: Module ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/chart/':
+    post:
+      tags:
+        - Charts
+      summary: 'List/read charts '
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_14
+                config:
+                  type: string
+                  description: Chart JSON
+                name:
+                  type: string
+                  description: Chart name
+                handle:
+                  type: string
+                  description: Chart handle
+              required:
+                - config
+                - name
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_14
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/chart/{chartID}':
+    delete:
+      tags:
+        - Charts
+      summary: Delete chart
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: chartID
+          description: Chart ID
+          required: true
+          schema:
+            type: string
+  /notification/email:
+    post:
+      tags:
+        - Notifications
+      summary: Send email from the Compose
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_15
+                to:
+                  type: array
+                  items:
+                    type: string
+                  description: Email addresses
+                cc:
+                  type: array
+                  items:
+                    type: string
+                  description: Email addresses
+                replyTo:
+                  type: string
+                  description: Email address in reply-to field
+                subject:
+                  type: string
+                  description: Email subject
+                content:
+                  type: string
+                  description: Message content
+                remoteAttachments:
+                  type: array
+                  items:
+                    type: string
+                  description: Remote files to attach to the email
+              required:
+                - to
+                - content
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_15
+  '/namespace/{namespaceID}/attachment/{kind}/':
+    get:
+      tags:
+        - Attachments
+      summary: 'List, filter all page attachments'
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: query
+          name: sign
+          description: Signature
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: userID
+          description: User ID
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: pageID
+          description: Filter attachments by page ID
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: moduleID
+          description: Filter attachments by module ID
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: recordID
+          description: Filter attachments by record ID
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: fieldName
+          description: Filter attachments by field name
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: Offset
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: page
+          description: Page number (1-based)
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: perPage
+          description: Returned items per page (default 50)
+          required: false
+          schema:
+            type: string
+        - in: path
+          name: kind
+          description: Attachment kind
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+  '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}':
+    delete:
+      tags:
+        - Attachments
+      summary: Delete attachment
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: kind
+          description: Attachment kind
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: attachmentID
+          description: Attachment ID
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: sign
+          description: Signature
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: userID
+          description: User ID
+          required: false
+          schema:
+            type: string
+  '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}/original/{name}':
+    get:
+      tags:
+        - Attachments
+      summary: Serves attached file
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: kind
+          description: Attachment kind
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: attachmentID
+          description: Attachment ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: name
+          description: File name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: sign
+          description: Signature
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: userID
+          description: User ID
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: download
+          description: Force file download
+          required: false
+          schema:
+            type: boolean
+  '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}/preview.{ext}':
+    get:
+      tags:
+        - Attachments
+      summary: Serves preview of an attached file
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: kind
+          description: Attachment kind
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: namespaceID
+          description: Namespace ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: attachmentID
+          description: Attachment ID
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: ext
+          description: Preview extension/format
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: sign
+          description: Signature
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: userID
+          description: User ID
+          required: false
+          schema:
+            type: string
+  /permissions/:
+    get:
+      tags:
+        - Permissions
+      summary: Retrieve defined permissions
+      responses:
+        '200':
+          description: OK
+  /permissions/effective:
+    get:
+      tags:
+        - Permissions
+      summary: Effective rules for current user
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: query
+          name: resource
+          description: Show only rules for a specific resource
+          required: false
+          schema:
+            type: string
+  '/permissions/{roleID}/rules':
+    patch:
+      tags:
+        - Permissions
+      summary: Update permission settings
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: roleID
+          description: Role ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_16
+                rules:
+                  type: string
+                  description: List of permission rules to set
+              required:
+                - rules
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_16
+  /settings/:
+    patch:
+      tags:
+        - Settings
+      summary: Update settings
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_17
+                values:
+                  type: string
+                  description: >-
+                    Array of new settings: `[{ name: ..., value: ... }]`. Omit
+                    value to remove setting
+              required:
+                - values
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_17
+  '/settings/{key}':
+    get:
+      tags:
+        - Settings
+      summary: Get a value for a key
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: key
+          description: Setting key
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: ownerID
+          description: Owner ID
+          required: false
+          schema:
+            type: string
+  /settings/current:
+    get:
+      tags:
+        - Settings
+      summary: Current compose settings
+      responses:
+        '200':
+          description: OK
+  /automation/:
+    get:
+      tags:
+        - Compose automation scripts
+      summary: List all available automation scripts for compose resources
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: query
+          name: resourceTypePrefixes
+          description: Filter by resource prefix
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: resourceTypes
+          description: Filter by resource type
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: eventTypes
+          description: Filter by event type
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: excludeInvalid
+          description: Exclude scripts that can not be used (errors)
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: excludeClientScripts
+          description: Do not include client scripts
+          required: false
+          schema:
+            type: boolean
+        - in: query
+          name: excludeServerScripts
+          description: Do not include server scripts
+          required: false
+          schema:
+            type: boolean
+  '/automation/{bundle}-{type}.{ext}':
+    get:
+      tags:
+        - Compose automation scripts
+      summary: Serves client scripts bundle
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: bundle
+          description: Name of the bundle
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: type
+          description: Bundle type
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: ext
+          description: Bundle extension
+          required: true
+          schema:
+            type: string
+  /automation/trigger:
+    post:
+      tags:
+        - Compose automation scripts
+      summary: Triggers execution of a specific script on a system service level
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_18
+                script:
+                  type: string
+                  description: Script to execute
+              required:
+                - script
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_18

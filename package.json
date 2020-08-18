@@ -1,0 +1,14 @@
+{
+  "name": "@cortezaproject/openapi3-converter",
+  "description": "Corteza openAPI 3.0 converter",
+  "version": "1.0",
+  "license": "Apache-2.0",
+  "author": "Jože Fortun <joze.fortun@gmail.com>",
+  "scripts": {
+    "convert": "node -r esm tools/convert.js"
+  },
+  "devDependencies": {
+    "esm": "^3.2.25",
+    "js-yaml": "^3.14.0"
+  }
+}
