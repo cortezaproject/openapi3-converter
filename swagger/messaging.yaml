@@ -18,6 +18,41 @@ paths:
         '200':
           description: OK
   /status/:
+    get:
+      tags:
+        - Status
+      summary: See all current statuses
+      responses:
+        '200':
+          description: OK
+    post:
+      tags:
+        - Status
+      summary: Set user's status
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_0
+                icon:
+                  type: string
+                  description: Status icon
+                message:
+                  type: string
+                  description: Status message
+                expires:
+                  type: string
+                  description: >-
+                    Clear status when it expires (eg: when-active, afternoon,
+                    tomorrow 1h, 30m, 1 PM, 2019-05-20)
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_0
     delete:
       tags:
         - Status
@@ -40,7 +75,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_0
+              properties: &ref_1
                 channelID:
                   type: string
                   description: >-
@@ -57,8 +92,22 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_0
+              properties: *ref_1
   /channels/:
+    get:
+      tags:
+        - Channels
+      summary: List channels
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: query
+          name: query
+          description: Search query
+          required: false
+          schema: &ref_2
+            type: string
     post:
       tags:
         - Channels
@@ -71,7 +120,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_1
+              properties: &ref_3
                 name:
                   type: string
                   description: Name of Channel
@@ -86,14 +135,52 @@ paths:
                   description: 'Membership policy (eg: featured, forced)?'
                 members:
                   type: array
-                  items: &ref_4
-                    type: string
+                  items: *ref_2
                   description: Initial members of the channel
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_1
+              properties: *ref_3
   '/channels/{channelID}':
+    put:
+      tags:
+        - Channels
+      summary: Update channel details
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: &ref_5
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_4
+                name:
+                  type: string
+                  description: Name of Channel
+                topic:
+                  type: string
+                  description: Subject of Channel
+                membershipPolicy:
+                  type: string
+                  description: 'Membership policy (eg: featured, forced)?'
+                type:
+                  type: string
+                  description: Channel type
+                organisationID:
+                  type: string
+                  description: Move channel to different organisation
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_4
     get:
       tags:
         - Channels
@@ -106,8 +193,7 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: &ref_2
-            type: string
+          schema: *ref_5
   '/channels/{channelID}/state':
     put:
       tags:
@@ -121,13 +207,13 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_3
+              properties: &ref_6
                 state:
                   type: string
                   description: 'Valid values: delete, undelete, archive, unarchive'
@@ -136,8 +222,36 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_3
+              properties: *ref_6
   '/channels/{channelID}/flag':
+    put:
+      tags:
+        - Channels
+      summary: Update channel membership flag
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: *ref_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_7
+                flag:
+                  type: string
+                  description: 'Valid values: pinned, hidden, ignored'
+              required:
+                - flag
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_7
     delete:
       tags:
         - Channels
@@ -150,7 +264,7 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/members':
     get:
       tags:
@@ -164,8 +278,26 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/members/{userID}':
+    put:
+      tags:
+        - Channels
+      summary: Join channel
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: *ref_5
+        - in: path
+          name: userID
+          description: Member ID
+          required: true
+          schema: *ref_5
     delete:
       tags:
         - Channels
@@ -178,12 +310,12 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: userID
           description: Member ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/invite':
     post:
       tags:
@@ -197,21 +329,21 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_5
+              properties: &ref_8
                 userID:
                   type: array
-                  items: *ref_4
+                  items: *ref_2
                   description: User ID
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_5
+              properties: *ref_8
   '/channels/{channelID}/attach':
     post:
       tags:
@@ -225,13 +357,13 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_6
+              properties: &ref_9
                 replyTo:
                   type: string
                   description: Upload as a reply
@@ -244,7 +376,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_6
+              properties: *ref_9
   '/channels/{channelID}/messages/':
     post:
       tags:
@@ -258,7 +390,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_7
+              properties: &ref_10
                 message:
                   type: string
                   description: Message contents (markdown)
@@ -267,13 +399,13 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_7
+              properties: *ref_10
       parameters:
         - in: path
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/messages/command/{command}/exec':
     post:
       tags:
@@ -287,29 +419,29 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: command
           description: Command to be executed
           required: true
-          schema: *ref_4
+          schema: *ref_2
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_8
+              properties: &ref_11
                 input:
                   type: string
                   description: Arbitrary command input
                 params:
                   type: array
-                  items: *ref_4
+                  items: *ref_2
                   description: Command parameters
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_8
+              properties: *ref_11
   '/channels/{channelID}/messages/mark-as-read':
     get:
       tags:
@@ -323,18 +455,51 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: threadID
           description: 'ID of thread (messageID) '
           required: false
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: lastReadMessageID
           description: ID of the last read message
           required: false
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/messages/{messageID}':
+    put:
+      tags:
+        - Messages
+      summary: Edit existing message
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: *ref_5
+        - in: path
+          name: messageID
+          description: Message ID
+          required: true
+          schema: *ref_5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties: &ref_12
+                message:
+                  type: string
+                  description: Message contents (markdown)
+              required:
+                - message
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties: *ref_12
     delete:
       tags:
         - Messages
@@ -347,12 +512,12 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: messageID
           description: Message ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/messages/{messageID}/replies':
     post:
       tags:
@@ -366,18 +531,18 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: messageID
           description: Message ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_9
+              properties: &ref_13
                 message:
                   type: string
                   description: Message contents (markdown)
@@ -386,8 +551,26 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_9
+              properties: *ref_13
   '/channels/{channelID}/messages/{messageID}/pin':
+    post:
+      tags:
+        - Messages
+      summary: Pin message to channel (public bookmark)
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: *ref_5
+        - in: path
+          name: messageID
+          description: Message ID
+          required: true
+          schema: *ref_5
     delete:
       tags:
         - Messages
@@ -400,13 +583,31 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: messageID
           description: Message ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/messages/{messageID}/bookmark':
+    post:
+      tags:
+        - Messages
+      summary: Bookmark a message (private bookmark)
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: *ref_5
+        - in: path
+          name: messageID
+          description: Message ID
+          required: true
+          schema: *ref_5
     delete:
       tags:
         - Messages
@@ -419,13 +620,36 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: messageID
           description: Message ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   '/channels/{channelID}/messages/{messageID}/reaction/{reaction}':
+    post:
+      tags:
+        - Messages
+      summary: React to a message
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: channelID
+          description: Channel ID
+          required: true
+          schema: *ref_5
+        - in: path
+          name: messageID
+          description: Message ID
+          required: true
+          schema: *ref_5
+        - in: path
+          name: reaction
+          description: Reaction
+          required: true
+          schema: *ref_2
     delete:
       tags:
         - Messages
@@ -438,17 +662,17 @@ paths:
           name: channelID
           description: Channel ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: messageID
           description: Message ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: reaction
           description: Reaction
           required: true
-          schema: *ref_4
+          schema: *ref_2
   '/attachment/{attachmentID}/original/{name}':
     get:
       tags:
@@ -462,27 +686,27 @@ paths:
           name: attachmentID
           description: Attachment ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: name
           description: File name
           required: true
-          schema: *ref_4
+          schema: *ref_2
         - in: query
           name: sign
           description: Signature
           required: true
-          schema: *ref_4
+          schema: *ref_2
         - in: query
           name: userID
           description: User ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: download
           description: Force file download
           required: false
-          schema: &ref_10
+          schema: &ref_14
             type: boolean
   '/attachment/{attachmentID}/preview.{ext}':
     get:
@@ -497,22 +721,22 @@ paths:
           name: attachmentID
           description: Attachment ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
         - in: path
           name: ext
           description: Preview extension/format
           required: true
-          schema: *ref_4
+          schema: *ref_2
         - in: query
           name: sign
           description: Signature
           required: true
-          schema: *ref_4
+          schema: *ref_2
         - in: query
           name: userID
           description: User ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
   /search/messages:
     get:
       tags:
@@ -526,70 +750,70 @@ paths:
           name: query
           description: Search query
           required: false
-          schema: *ref_4
+          schema: *ref_2
         - in: query
           name: channelID
           description: Filter by channels
           required: false
           schema:
             type: array
-            items: *ref_4
+            items: *ref_2
         - in: query
           name: afterMessageID
           description: ID of the first message in the list (exclusive)
           required: false
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: beforeMessageID
           description: ID of the last message in the list (exclusive)
           required: false
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: fromMessageID
           description: ID of the first message in the list (inclusive)
           required: false
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: toMessageID
           description: ID of the last message the list (inclusive)
           required: false
-          schema: *ref_2
+          schema: *ref_5
         - in: query
           name: threadID
           description: Filter by thread message ID
           required: false
           schema:
             type: array
-            items: *ref_4
+            items: *ref_2
         - in: query
           name: userID
           description: Filter by one or more user
           required: false
           schema:
             type: array
-            items: *ref_4
+            items: *ref_2
         - in: query
           name: type
           description: 'Filter by message type (text, inlineImage, attachment, ...)'
           required: false
           schema:
             type: array
-            items: *ref_4
+            items: *ref_2
         - in: query
           name: pinnedOnly
           description: Return only pinned messages
           required: false
-          schema: *ref_10
+          schema: *ref_14
         - in: query
           name: bookmarkedOnly
           description: Only bookmarked messages
           required: false
-          schema: *ref_10
+          schema: *ref_14
         - in: query
           name: limit
           description: Max number of messages
           required: false
-          schema: &ref_11
+          schema: &ref_15
             type: string
   /search/threads:
     get:
@@ -604,19 +828,19 @@ paths:
           name: query
           description: Search query
           required: false
-          schema: *ref_4
+          schema: *ref_2
         - in: query
           name: channelID
           description: Filter by channels
           required: false
           schema:
             type: array
-            items: *ref_4
+            items: *ref_2
         - in: query
           name: limit
           description: Max number of messages
           required: false
-          schema: *ref_11
+          schema: *ref_15
   /permissions/:
     get:
       tags:
@@ -638,8 +862,34 @@ paths:
           name: resource
           description: Show only rules for a specific resource
           required: false
-          schema: *ref_4
+          schema: *ref_2
   '/permissions/{roleID}/rules':
+    get:
+      tags:
+        - Permissions
+      summary: Retrieve role permissions
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: roleID
+          description: Role ID
+          required: true
+          schema: *ref_5
+    delete:
+      tags:
+        - Permissions
+      summary: Remove all defined role permissions
+      responses:
+        '200':
+          description: OK
+      parameters:
+        - in: path
+          name: roleID
+          description: Role ID
+          required: true
+          schema: *ref_5
     patch:
       tags:
         - Permissions
@@ -652,13 +902,13 @@ paths:
           name: roleID
           description: Role ID
           required: true
-          schema: *ref_2
+          schema: *ref_5
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties: &ref_12
+              properties: &ref_16
                 rules:
                   type: array
                   items:
@@ -679,63 +929,4 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_12
-  /settings/:
-    patch:
-      tags:
-        - Settings
-      summary: Update settings
-      responses:
-        '200':
-          description: OK
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties: &ref_13
-                values:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      value:
-                        type: string
-                  description: >-
-                    Array of new settings: `[{ name: ..., value: ... }]`. Omit
-                    value to remove setting
-              required:
-                - values
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties: *ref_13
-  '/settings/{key}':
-    get:
-      tags:
-        - Settings
-      summary: Get a value for a key
-      responses:
-        '200':
-          description: OK
-      parameters:
-        - in: path
-          name: key
-          description: Setting key
-          required: true
-          schema: *ref_4
-        - in: query
-          name: ownerID
-          description: Owner ID
-          required: false
-          schema: *ref_2
-  /settings/current:
-    get:
-      tags:
-        - Settings
-      summary: Current compose settings
-      responses:
-        '200':
-          description: OK
+              properties: *ref_16

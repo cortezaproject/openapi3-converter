@@ -380,7 +380,7 @@ namespaces.forEach(({ path, namespace, className }) => {
       })
 
       // Save openAPI definition for endproint group
-      base.paths[`${basePath}${api.path}`] = def
+      base.paths[`${basePath}${api.path}`] = {...base.paths[`${basePath}${api.path}`], ...def}
     })
   })
 
