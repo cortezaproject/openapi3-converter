@@ -45,7 +45,7 @@ const openAPItypesMap = {
   'sqlxTypes.JSONText': { type: 'string', format: 'json' },
   '*multipart.FileHeader': { type: 'string', format: 'binary' },
   'types.ChannelMembershipPolicy': { type: 'string' },
-  'types.UserKind': { type: 'string '},
+  'types.UserKind': { type: 'string'},
   'ProcedureArg': {
     type: 'object',
     properties: {

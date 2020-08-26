@@ -411,20 +411,10 @@ paths:
           required: false
           schema: *ref_12
         - in: query
-          name: offset
-          description: Offset
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_12
-        - in: query
-          name: page
-          description: Page number (1-based)
-          required: false
-          schema: *ref_12
-        - in: query
-          name: perPage
-          description: Returned items per page (default 50)
-          required: false
-          schema: *ref_12
+          schema: *ref_10
         - in: query
           name: sort
           description: Sort items
@@ -748,7 +738,7 @@ paths:
           description: 'Kind (normal, bot)'
           required: false
           schema:
-            type: 'string '
+            type: string
         - in: query
           name: incDeleted
           description: '[Deprecated] Include deleted users (requires ''access'' permission)'
@@ -776,20 +766,10 @@ paths:
           required: false
           schema: *ref_12
         - in: query
-          name: offset
-          description: Offset
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_12
-        - in: query
-          name: page
-          description: Page number (1-based)
-          required: false
-          schema: *ref_12
-        - in: query
-          name: perPage
-          description: Returned items per page (default 50)
-          required: false
-          schema: *ref_12
+          schema: *ref_10
         - in: query
           name: sort
           description: Sort items
@@ -818,7 +798,7 @@ paths:
                   type: string
                   description: Handle
                 kind:
-                  type: 'string '
+                  type: string
                   description: 'Kind (normal, bot)'
               required:
                 - email
@@ -856,7 +836,7 @@ paths:
                   type: string
                   description: Handle
                 kind:
-                  type: 'string '
+                  type: string
                   description: 'Kind (normal, bot)'
               required:
                 - email
@@ -1073,20 +1053,10 @@ paths:
           required: false
           schema: *ref_12
         - in: query
-          name: offset
-          description: Offset
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_12
-        - in: query
-          name: page
-          description: Page number (1-based)
-          required: false
-          schema: *ref_12
-        - in: query
-          name: perPage
-          description: Returned items per page (default 50)
-          required: false
-          schema: *ref_12
+          schema: *ref_10
         - in: query
           name: sort
           description: Sort items
@@ -1377,20 +1347,10 @@ paths:
           required: false
           schema: *ref_12
         - in: query
-          name: offset
-          description: Offset
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_12
-        - in: query
-          name: page
-          description: Page number (1-based)
-          required: false
-          schema: *ref_12
-        - in: query
-          name: perPage
-          description: Returned items per page (default 50)
-          required: false
-          schema: *ref_12
+          schema: *ref_10
         - in: query
           name: sort
           description: Sort items
@@ -1815,17 +1775,7 @@ paths:
           required: false
           schema: *ref_12
         - in: query
-          name: offset
-          description: Offset
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_12
-        - in: query
-          name: page
-          description: Page number (1-based)
-          required: false
-          schema: *ref_12
-        - in: query
-          name: perPage
-          description: Returned items per page (default 50)
-          required: false
-          schema: *ref_12
+          schema: *ref_10
