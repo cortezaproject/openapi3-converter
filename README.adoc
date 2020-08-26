@@ -1,8 +1,15 @@
 # Corteza openAPI 3.0 converter
 
+## Generating openAPI
 Converts Corteza REST API YAML definition to openAPI 3.0. +
 Run with +
-`yarn convert <optional-path-to-corteza-server>`
+`yarn convert:yaml <optional-path-to-corteza-server>`
 
 The script assumes that the `corteza-server` and `openapi3-converter` repositiories are in the same folder. +
 If not you can provide the path to the corteza-server.
+
+## Serving openAPI with Swagger
+Make sure you are in the `openapi3-converter` repository
+
+To serve the generated openAPI documentation run
+`yarn serve:swagger`
