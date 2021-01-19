@@ -36,6 +36,11 @@ paths:
           schema: &ref_5
             type: string
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_0
+        - in: query
           name: pageCursor
           description: Page cursor
           required: false
@@ -61,6 +66,9 @@ paths:
                 name:
                   type: string
                   description: Name
+                labels:
+                  type: string
+                  description: Labels
                 slug:
                   type: string
                   description: Slug (url path part)
@@ -125,6 +133,9 @@ paths:
                   type: string
                   format: json
                   description: Meta data
+                labels:
+                  type: string
+                  description: Labels
                 updatedAt:
                   type: string
                   format: date-time
@@ -203,6 +214,11 @@ paths:
           required: false
           schema: *ref_0
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_0
+        - in: query
           name: limit
           description: Limit
           required: false
@@ -253,6 +269,9 @@ paths:
                 weight:
                   type: integer
                   description: Page tree weight
+                labels:
+                  type: string
+                  description: Labels
                 visible:
                   type: boolean
                   description: Visible in navigation
@@ -333,6 +352,9 @@ paths:
                 weight:
                   type: integer
                   description: Page tree weight
+                labels:
+                  type: string
+                  description: Labels
                 visible:
                   type: boolean
                   description: Visible in navigation
@@ -517,6 +539,11 @@ paths:
           required: false
           schema: *ref_0
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_0
+        - in: query
           name: sort
           description: Sort items
           required: false
@@ -580,6 +607,9 @@ paths:
                   type: string
                   format: json
                   description: Module meta data
+                labels:
+                  type: string
+                  description: Module labels
               required:
                 - name
                 - fields
@@ -655,6 +685,9 @@ paths:
                   type: string
                   format: date-time
                   description: Last update (or creation) date
+                labels:
+                  type: string
+                  description: Module labels
               required:
                 - name
                 - fields
@@ -769,6 +802,11 @@ paths:
           required: false
           schema: *ref_0
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_0
+        - in: query
           name: deleted
           description: 'Exclude (0, default), include (1) or return only (2) deleted records'
           required: false
@@ -779,20 +817,21 @@ paths:
           required: false
           schema: *ref_5
         - in: query
-          name: offset
-          description: Offset
+          name: incTotal
+          description: Include total records counter
           required: false
-          schema: *ref_5
+          schema: &ref_15
+            type: boolean
         - in: query
-          name: page
-          description: Page number (1-based)
+          name: incPageNavigation
+          description: Include page navigation
           required: false
-          schema: *ref_5
+          schema: *ref_15
         - in: query
-          name: perPage
-          description: Returned items per page (default 50)
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_5
+          schema: *ref_0
         - in: query
           name: sort
           description: Sort items
@@ -820,10 +859,10 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_15
+              properties: &ref_16
                 values:
                   type: array
-                  items: &ref_20
+                  items: &ref_21
                     type: object
                     properties:
                       name:
@@ -833,7 +872,7 @@ paths:
                   description: Record values
                 records:
                   type: array
-                  items: &ref_21
+                  items: &ref_22
                     type: object
                     properties:
                       recordID:
@@ -876,10 +915,13 @@ paths:
                         type: string
                         format: uuid
                   description: Records
+                labels:
+                  type: string
+                  description: Labels
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_15
+              properties: *ref_16
       parameters:
         - in: path
           name: namespaceID
@@ -903,7 +945,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_16
+              properties: &ref_17
                 recordIDs:
                   type: array
                   items: *ref_0
@@ -916,7 +958,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_16
+              properties: *ref_17
       parameters:
         - in: path
           name: namespaceID
@@ -941,7 +983,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_17
+              properties: &ref_18
                 upload:
                   type: string
                   format: binary
@@ -951,7 +993,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_17
+              properties: *ref_18
       parameters:
         - in: path
           name: namespaceID
@@ -992,7 +1034,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_18
+              properties: &ref_19
                 fields:
                   type: string
                   format: json
@@ -1006,7 +1048,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_18
+              properties: *ref_19
     get:
       tags:
         - Records
@@ -1105,7 +1147,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_19
+              properties: &ref_20
                 args:
                   type: array
                   items:
@@ -1119,7 +1161,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_19
+              properties: *ref_20
   '/namespace/{namespaceID}/module/{moduleID}/record/{recordID}':
     get:
       tags:
@@ -1172,19 +1214,22 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_22
+              properties: &ref_23
                 values:
                   type: array
-                  items: *ref_20
+                  items: *ref_21
                   description: Record values
                 records:
                   type: array
-                  items: *ref_21
+                  items: *ref_22
                   description: Records
+                labels:
+                  type: string
+                  description: Labels
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_22
+              properties: *ref_23
     delete:
       tags:
         - Records
@@ -1221,7 +1266,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_23
+              properties: &ref_24
                 recordID:
                   type: string
                   description: Record ID
@@ -1238,7 +1283,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_23
+              properties: *ref_24
       parameters:
         - in: path
           name: namespaceID
@@ -1279,13 +1324,13 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_24
+              properties: &ref_25
                 script:
                   type: string
                   description: Script to execute
                 values:
                   type: array
-                  items: *ref_20
+                  items: *ref_21
                   description: Record values
               required:
                 - script
@@ -1293,7 +1338,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_24
+              properties: *ref_25
   '/namespace/{namespaceID}/module/{moduleID}/record/trigger':
     post:
       tags:
@@ -1307,7 +1352,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_25
+              properties: &ref_26
                 script:
                   type: string
                   description: Script to execute
@@ -1316,7 +1361,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_25
+              properties: *ref_26
       parameters:
         - in: path
           name: namespaceID
@@ -1345,6 +1390,11 @@ paths:
         - in: query
           name: handle
           description: Search charts by handle
+          required: false
+          schema: *ref_0
+        - in: query
+          name: labels
+          description: Labels
           required: false
           schema: *ref_0
         - in: query
@@ -1379,7 +1429,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_26
+              properties: &ref_27
                 config:
                   type: string
                   format: json
@@ -1390,13 +1440,16 @@ paths:
                 handle:
                   type: string
                   description: Chart handle
+                labels:
+                  type: string
+                  description: Labels
               required:
                 - config
                 - name
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_26
+              properties: *ref_27
       parameters:
         - in: path
           name: namespaceID
@@ -1445,7 +1498,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_27
+              properties: &ref_28
                 config:
                   type: string
                   format: json
@@ -1456,6 +1509,9 @@ paths:
                 handle:
                   type: string
                   description: Chart handle
+                labels:
+                  type: string
+                  description: Labels
                 updatedAt:
                   type: string
                   format: date-time
@@ -1466,7 +1522,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_27
+              properties: *ref_28
     delete:
       tags:
         - Charts
@@ -1498,7 +1554,7 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_28
+              properties: &ref_29
                 to:
                   type: array
                   items: *ref_0
@@ -1527,7 +1583,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_28
+              properties: *ref_29
   '/namespace/{namespaceID}/attachment/{kind}/':
     get:
       tags:
@@ -1573,20 +1629,10 @@ paths:
           required: false
           schema: *ref_5
         - in: query
-          name: offset
-          description: Offset
+          name: pageCursor
+          description: Page cursor
           required: false
-          schema: *ref_5
-        - in: query
-          name: page
-          description: Page number (1-based)
-          required: false
-          schema: *ref_5
-        - in: query
-          name: perPage
-          description: Returned items per page (default 50)
-          required: false
-          schema: *ref_5
+          schema: *ref_0
         - in: path
           name: kind
           description: Attachment kind
@@ -1707,8 +1753,7 @@ paths:
           name: download
           description: Force file download
           required: false
-          schema: &ref_30
-            type: boolean
+          schema: *ref_15
   '/namespace/{namespaceID}/attachment/{kind}/{attachmentID}/preview.{ext}':
     get:
       tags:
@@ -1815,28 +1860,16 @@ paths:
           application/json:
             schema:
               type: object
-              properties: &ref_29
+              properties: &ref_30
                 rules:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      roleID:
-                        type: string
-                        format: uuid
-                      resource:
-                        type: string
-                      operation:
-                        type: string
-                      access:
-                        type: string
+                  type: string
                   description: List of permission rules to set
               required:
                 - rules
           application/x-www-form-urlencoded:
             schema:
               type: object
-              properties: *ref_29
+              properties: *ref_30
   /automation/:
     get:
       tags:
@@ -1871,17 +1904,17 @@ paths:
           name: excludeInvalid
           description: Exclude scripts that can not be used (errors)
           required: false
-          schema: *ref_30
+          schema: *ref_15
         - in: query
           name: excludeClientScripts
           description: Do not include client scripts
           required: false
-          schema: *ref_30
+          schema: *ref_15
         - in: query
           name: excludeServerScripts
           description: Do not include server scripts
           required: false
-          schema: *ref_30
+          schema: *ref_15
   '/automation/{bundle}-{type}.{ext}':
     get:
       tags:

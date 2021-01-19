@@ -910,19 +910,7 @@ paths:
               type: object
               properties: &ref_16
                 rules:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      roleID:
-                        type: string
-                        format: uuid
-                      resource:
-                        type: string
-                      operation:
-                        type: string
-                      access:
-                        type: string
+                  type: string
                   description: List of permission rules to set
               required:
                 - rules

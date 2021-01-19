@@ -406,6 +406,11 @@ paths:
           required: false
           schema: *ref_12
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_10
+        - in: query
           name: limit
           description: Limit
           required: false
@@ -443,6 +448,9 @@ paths:
                   type: array
                   items: *ref_10
                   description: Role member IDs
+                labels:
+                  type: string
+                  description: Labels
               required:
                 - name
                 - handle
@@ -480,6 +488,9 @@ paths:
                   type: array
                   items: *ref_10
                   description: Role member IDs
+                labels:
+                  type: string
+                  description: Labels
           application/x-www-form-urlencoded:
             schema:
               type: object
@@ -761,6 +772,11 @@ paths:
           required: false
           schema: *ref_12
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_10
+        - in: query
           name: limit
           description: Limit
           required: false
@@ -800,6 +816,9 @@ paths:
                 kind:
                   type: string
                   description: 'Kind (normal, bot)'
+                labels:
+                  type: string
+                  description: Labels
               required:
                 - email
           application/x-www-form-urlencoded:
@@ -838,6 +857,9 @@ paths:
                 kind:
                   type: string
                   description: 'Kind (normal, bot)'
+                labels:
+                  type: string
+                  description: Labels
               required:
                 - email
                 - name
@@ -1048,6 +1070,11 @@ paths:
           required: false
           schema: *ref_12
         - in: query
+          name: labels
+          description: Labels
+          required: false
+          schema: *ref_10
+        - in: query
           name: limit
           description: Limit
           required: false
@@ -1089,6 +1116,9 @@ paths:
                   type: string
                   format: json
                   description: Arbitrary JSON holding application configuration
+                labels:
+                  type: string
+                  description: Labels
               required:
                 - name
           application/x-www-form-urlencoded:
@@ -1129,6 +1159,9 @@ paths:
                   type: string
                   format: json
                   description: Arbitrary JSON holding application configuration
+                labels:
+                  type: string
+                  description: Labels
               required:
                 - name
           application/x-www-form-urlencoded:
@@ -1273,19 +1306,7 @@ paths:
               type: object
               properties: &ref_27
                 rules:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      roleID:
-                        type: string
-                        format: uuid
-                      resource:
-                        type: string
-                      operation:
-                        type: string
-                      access:
-                        type: string
+                  type: string
                   description: List of permission rules to set
               required:
                 - rules
@@ -1753,6 +1774,11 @@ paths:
           required: false
           schema: *ref_28
         - in: query
+          name: beforeActionID
+          description: Entries before specified action ID
+          required: false
+          schema: *ref_14
+        - in: query
           name: resource
           description: Resource
           required: false
@@ -1774,8 +1800,3 @@ paths:
           description: Limit
           required: false
           schema: *ref_12
-        - in: query
-          name: pageCursor
-          description: Page cursor
-          required: false
-          schema: *ref_10

@@ -7,7 +7,7 @@
   "scripts": {
     "convert:yaml": "node -r esm tools/convert.js",
     "pull:swagger": "docker pull swaggerapi/swagger-ui",
-    "serve:swagger": "yarn pull:swagger; echo \"\n\\033[32mSwagger running at:\n\\e[0m- http://localhost:80\n\";docker run -p 80:8080 -e URLS_PRIMARY_NAME=Compose -e URLS=\"[{ url: 'docs/system.yaml', name: 'System' }, { url: 'docs/compose.yaml', name: 'Compose' }, { url: 'docs/messaging.yaml', name: 'Messaging' }]\" -v `pwd`/swagger:/usr/share/nginx/html/docs/ swaggerapi/swagger-ui"
+    "serve:swagger": "yarn pull:swagger; echo \"\n\\033[32mSwagger running at:\n\\e[0m- http://localhost:80\n\";docker run -p 80:8080 -e URLS_PRIMARY_NAME=Compose -e URLS=\"[{ url: 'docs/system.yaml', name: 'System' }, { url: 'docs/compose.yaml', name: 'Compose' }, { url: 'docs/messaging.yaml', name: 'Messaging' }]\" -e VALIDATOR_URL= -v `pwd`/swagger:/usr/share/nginx/html/docs/ swaggerapi/swagger-ui"
   },
   "devDependencies": {
     "esm": "^3.2.25",
