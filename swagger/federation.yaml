@@ -9,7 +9,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 paths:
-  '/nodes/{nodeID}/handshake':
+  '/federation/nodes/{nodeID}/handshake':
     post:
       tags:
         - Federation node handshake
@@ -49,7 +49,7 @@ paths:
           required: true
           schema: &ref_3
             type: string
-  /nodes/:
+  /federation/nodes/:
     get:
       tags:
         - Federation nodes
@@ -98,7 +98,7 @@ paths:
             schema:
               type: object
               properties: *ref_2
-  '/nodes/{nodeID}':
+  '/federation/nodes/{nodeID}':
     get:
       tags:
         - Federation nodes
@@ -157,7 +157,7 @@ paths:
           description: NodeID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/uri':
+  '/federation/nodes/{nodeID}/uri':
     post:
       tags:
         - Federation nodes
@@ -171,7 +171,7 @@ paths:
           description: NodeID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/undelete':
+  '/federation/nodes/{nodeID}/undelete':
     post:
       tags:
         - Federation nodes
@@ -185,7 +185,7 @@ paths:
           description: NodeID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/pair':
+  '/federation/nodes/{nodeID}/pair':
     post:
       tags:
         - Federation nodes
@@ -199,7 +199,7 @@ paths:
           description: NodeID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/handshake-confirm':
+  '/federation/nodes/{nodeID}/handshake-confirm':
     post:
       tags:
         - Federation nodes
@@ -213,7 +213,7 @@ paths:
           description: NodeID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/handshake-complete':
+  '/federation/nodes/{nodeID}/handshake-complete':
     post:
       tags:
         - Federation nodes
@@ -242,7 +242,7 @@ paths:
             schema:
               type: object
               properties: *ref_5
-  '/nodes/{nodeID}/modules/{moduleID}/exposed':
+  '/federation/nodes/{nodeID}/modules/{moduleID}/exposed':
     get:
       tags:
         - Manage structure
@@ -355,7 +355,7 @@ paths:
           description: Module ID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/modules/':
+  '/federation/nodes/{nodeID}/modules/':
     put:
       tags:
         - Manage structure
@@ -424,7 +424,7 @@ paths:
           description: List exposed modules
           required: false
           schema: *ref_9
-  '/nodes/{nodeID}/modules/{moduleID}/shared':
+  '/federation/nodes/{nodeID}/modules/{moduleID}/shared':
     get:
       tags:
         - Manage structure
@@ -443,7 +443,7 @@ paths:
           description: Module ID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/modules/{moduleID}/mapped':
+  '/federation/nodes/{nodeID}/modules/{moduleID}/mapped':
     put:
       tags:
         - Manage structure
@@ -502,7 +502,7 @@ paths:
           description: Module ID
           required: true
           schema: *ref_3
-  '/nodes/{nodeID}/modules/exposed/':
+  '/federation/nodes/{nodeID}/modules/exposed/':
     get:
       tags:
         - Sync structure
@@ -542,7 +542,7 @@ paths:
           description: Sort items
           required: false
           schema: *ref_1
-  '/nodes/{nodeID}/modules/exposed/records/':
+  '/federation/nodes/{nodeID}/modules/exposed/records/':
     get:
       tags:
         - Sync data
@@ -581,7 +581,7 @@ paths:
           description: Sort items
           required: false
           schema: *ref_1
-  '/nodes/{nodeID}/modules/{moduleID}/records/':
+  '/federation/nodes/{nodeID}/modules/{moduleID}/records/':
     get:
       tags:
         - Sync data
@@ -625,7 +625,7 @@ paths:
           description: Sort items
           required: false
           schema: *ref_1
-  /permissions/:
+  /federation/permissions/:
     get:
       tags:
         - Permissions
@@ -633,7 +633,7 @@ paths:
       responses:
         '200':
           description: OK
-  /permissions/effective:
+  /federation/permissions/effective:
     get:
       tags:
         - Permissions
@@ -647,7 +647,7 @@ paths:
           description: Show only rules for a specific resource
           required: false
           schema: *ref_1
-  '/permissions/{roleID}/rules':
+  '/federation/permissions/{roleID}/rules':
     get:
       tags:
         - Permissions

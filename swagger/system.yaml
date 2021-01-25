@@ -9,7 +9,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 paths:
-  /auth/:
+  /system/auth/:
     get:
       tags:
         - Authentication
@@ -17,7 +17,7 @@ paths:
       responses:
         '200':
           description: OK
-  /auth/check:
+  /system/auth/check:
     get:
       tags:
         - Authentication
@@ -25,7 +25,7 @@ paths:
       responses:
         '200':
           description: OK
-  /auth/impersonate:
+  /system/auth/impersonate:
     post:
       tags:
         - Authentication
@@ -48,7 +48,7 @@ paths:
             schema:
               type: object
               properties: *ref_0
-  /auth/exchange:
+  /system/auth/exchange:
     post:
       tags:
         - Authentication
@@ -71,7 +71,7 @@ paths:
             schema:
               type: object
               properties: *ref_1
-  /auth/logout:
+  /system/auth/logout:
     get:
       tags:
         - Authentication
@@ -79,7 +79,7 @@ paths:
       responses:
         '200':
           description: OK
-  /auth/internal/login:
+  /system/auth/internal/login:
     post:
       tags:
         - Internal authentication
@@ -107,7 +107,7 @@ paths:
             schema:
               type: object
               properties: *ref_2
-  /auth/internal/signup:
+  /system/auth/internal/signup:
     post:
       tags:
         - Internal authentication
@@ -144,7 +144,7 @@ paths:
             schema:
               type: object
               properties: *ref_3
-  /auth/internal/request-password-reset:
+  /system/auth/internal/request-password-reset:
     post:
       tags:
         - Internal authentication
@@ -167,7 +167,7 @@ paths:
             schema:
               type: object
               properties: *ref_4
-  /auth/internal/exchange-password-reset-token:
+  /system/auth/internal/exchange-password-reset-token:
     post:
       tags:
         - Internal authentication
@@ -190,7 +190,7 @@ paths:
             schema:
               type: object
               properties: *ref_5
-  /auth/internal/reset-password:
+  /system/auth/internal/reset-password:
     post:
       tags:
         - Internal authentication
@@ -218,7 +218,7 @@ paths:
             schema:
               type: object
               properties: *ref_6
-  /auth/internal/confirm-email:
+  /system/auth/internal/confirm-email:
     post:
       tags:
         - Internal authentication
@@ -241,7 +241,7 @@ paths:
             schema:
               type: object
               properties: *ref_7
-  /auth/internal/change-password:
+  /system/auth/internal/change-password:
     post:
       tags:
         - Internal authentication
@@ -268,7 +268,7 @@ paths:
             schema:
               type: object
               properties: *ref_8
-  /settings/:
+  /system/settings/:
     get:
       tags:
         - Settings
@@ -314,7 +314,7 @@ paths:
             schema:
               type: object
               properties: *ref_9
-  '/settings/{key}':
+  '/system/settings/{key}':
     get:
       tags:
         - Settings
@@ -364,7 +364,7 @@ paths:
             schema:
               type: object
               properties: *ref_11
-  /settings/current:
+  /system/settings/current:
     get:
       tags:
         - Settings
@@ -372,7 +372,7 @@ paths:
       responses:
         '200':
           description: OK
-  /subscription/:
+  /system/subscription/:
     get:
       tags:
         - Subscription
@@ -380,7 +380,7 @@ paths:
       responses:
         '200':
           description: OK
-  /roles/:
+  /system/roles/:
     get:
       tags:
         - Roles
@@ -458,7 +458,7 @@ paths:
             schema:
               type: object
               properties: *ref_13
-  '/roles/{roleID}':
+  '/system/roles/{roleID}':
     put:
       tags:
         - Roles
@@ -521,7 +521,7 @@ paths:
           description: Role ID
           required: true
           schema: *ref_14
-  '/roles/{roleID}/archive':
+  '/system/roles/{roleID}/archive':
     post:
       tags:
         - Roles
@@ -535,7 +535,7 @@ paths:
           description: Role ID
           required: true
           schema: *ref_14
-  '/roles/{roleID}/unarchive':
+  '/system/roles/{roleID}/unarchive':
     post:
       tags:
         - Roles
@@ -549,7 +549,7 @@ paths:
           description: Role ID
           required: true
           schema: *ref_14
-  '/roles/{roleID}/undelete':
+  '/system/roles/{roleID}/undelete':
     post:
       tags:
         - Roles
@@ -563,7 +563,7 @@ paths:
           description: Role ID
           required: true
           schema: *ref_14
-  '/roles/{roleID}/move':
+  '/system/roles/{roleID}/move':
     post:
       tags:
         - Roles
@@ -592,7 +592,7 @@ paths:
             schema:
               type: object
               properties: *ref_16
-  '/roles/{roleID}/merge':
+  '/system/roles/{roleID}/merge':
     post:
       tags:
         - Roles
@@ -621,7 +621,7 @@ paths:
             schema:
               type: object
               properties: *ref_17
-  '/roles/{roleID}/members':
+  '/system/roles/{roleID}/members':
     get:
       tags:
         - Roles
@@ -635,7 +635,7 @@ paths:
           description: Source Role ID
           required: true
           schema: *ref_14
-  '/roles/{roleID}/member/{userID}':
+  '/system/roles/{roleID}/member/{userID}':
     post:
       tags:
         - Roles
@@ -672,7 +672,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/roles/{roleID}/trigger':
+  '/system/roles/{roleID}/trigger':
     post:
       tags:
         - Roles
@@ -701,7 +701,7 @@ paths:
             schema:
               type: object
               properties: *ref_18
-  /users/:
+  /system/users/:
     get:
       tags:
         - Users
@@ -825,7 +825,7 @@ paths:
             schema:
               type: object
               properties: *ref_20
-  '/users/{userID}':
+  '/system/users/{userID}':
     put:
       tags:
         - Users
@@ -893,7 +893,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/users/{userID}/suspend':
+  '/system/users/{userID}/suspend':
     post:
       tags:
         - Users
@@ -907,7 +907,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/users/{userID}/unsuspend':
+  '/system/users/{userID}/unsuspend':
     post:
       tags:
         - Users
@@ -921,7 +921,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/users/{userID}/undelete':
+  '/system/users/{userID}/undelete':
     post:
       tags:
         - Users
@@ -935,7 +935,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/users/{userID}/password':
+  '/system/users/{userID}/password':
     post:
       tags:
         - Users
@@ -965,7 +965,7 @@ paths:
             schema:
               type: object
               properties: *ref_22
-  '/users/{userID}/membership':
+  '/system/users/{userID}/membership':
     get:
       tags:
         - Users
@@ -979,7 +979,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/users/{userID}/membership/{roleID}':
+  '/system/users/{userID}/membership/{roleID}':
     post:
       tags:
         - Users
@@ -1016,7 +1016,7 @@ paths:
           description: User ID
           required: true
           schema: *ref_14
-  '/users/{userID}/trigger':
+  '/system/users/{userID}/trigger':
     post:
       tags:
         - Users
@@ -1045,7 +1045,7 @@ paths:
             schema:
               type: object
               properties: *ref_23
-  /application/:
+  /system/application/:
     get:
       tags:
         - Applications
@@ -1125,7 +1125,7 @@ paths:
             schema:
               type: object
               properties: *ref_24
-  '/application/{applicationID}':
+  '/system/application/{applicationID}':
     put:
       tags:
         - Applications
@@ -1194,7 +1194,7 @@ paths:
           description: Application ID
           required: true
           schema: *ref_14
-  '/application/{applicationID}/undelete':
+  '/system/application/{applicationID}/undelete':
     post:
       tags:
         - Applications
@@ -1208,7 +1208,7 @@ paths:
           description: Application ID
           required: true
           schema: *ref_14
-  '/application/{applicationID}/trigger':
+  '/system/application/{applicationID}/trigger':
     post:
       tags:
         - Applications
@@ -1237,7 +1237,7 @@ paths:
             schema:
               type: object
               properties: *ref_26
-  /permissions/:
+  /system/permissions/:
     get:
       tags:
         - Permissions
@@ -1245,7 +1245,7 @@ paths:
       responses:
         '200':
           description: OK
-  /permissions/effective:
+  /system/permissions/effective:
     get:
       tags:
         - Permissions
@@ -1259,7 +1259,7 @@ paths:
           description: Show only rules for a specific resource
           required: false
           schema: *ref_10
-  '/permissions/{roleID}/rules':
+  '/system/permissions/{roleID}/rules':
     get:
       tags:
         - Permissions
@@ -1314,7 +1314,7 @@ paths:
             schema:
               type: object
               properties: *ref_27
-  /reminder/:
+  /system/reminder/:
     get:
       tags:
         - Reminders
@@ -1412,7 +1412,7 @@ paths:
             schema:
               type: object
               properties: *ref_29
-  '/reminder/{reminderID}':
+  '/system/reminder/{reminderID}':
     put:
       tags:
         - Reminders
@@ -1480,7 +1480,7 @@ paths:
           description: Reminder ID
           required: true
           schema: *ref_14
-  '/reminder/{reminderID}/dismiss':
+  '/system/reminder/{reminderID}/dismiss':
     patch:
       tags:
         - Reminders
@@ -1494,7 +1494,7 @@ paths:
           description: reminder ID
           required: true
           schema: *ref_14
-  '/reminder/{reminderID}/snooze':
+  '/system/reminder/{reminderID}/snooze':
     patch:
       tags:
         - Reminders
@@ -1524,7 +1524,7 @@ paths:
             schema:
               type: object
               properties: *ref_31
-  '/attachment/{kind}/{attachmentID}':
+  '/system/attachment/{kind}/{attachmentID}':
     get:
       tags:
         - Attachments
@@ -1581,7 +1581,7 @@ paths:
           description: User ID
           required: false
           schema: *ref_14
-  '/attachment/{kind}/{attachmentID}/original/{name}':
+  '/system/attachment/{kind}/{attachmentID}/original/{name}':
     get:
       tags:
         - Attachments
@@ -1620,7 +1620,7 @@ paths:
           description: Force file download
           required: false
           schema: *ref_19
-  '/attachment/{kind}/{attachmentID}/preview.{ext}':
+  '/system/attachment/{kind}/{attachmentID}/preview.{ext}':
     get:
       tags:
         - Attachments
@@ -1654,7 +1654,7 @@ paths:
           description: User ID
           required: false
           schema: *ref_14
-  /stats/:
+  /system/stats/:
     get:
       tags:
         - Statistics
@@ -1662,7 +1662,7 @@ paths:
       responses:
         '200':
           description: OK
-  /automation/:
+  /system/automation/:
     get:
       tags:
         - System automation scripts
@@ -1707,7 +1707,7 @@ paths:
           description: Do not include server scripts
           required: false
           schema: *ref_19
-  '/automation/{bundle}-{type}.{ext}':
+  '/system/automation/{bundle}-{type}.{ext}':
     get:
       tags:
         - System automation scripts
@@ -1731,7 +1731,7 @@ paths:
           description: Bundle extension
           required: true
           schema: *ref_10
-  /automation/trigger:
+  /system/automation/trigger:
     post:
       tags:
         - System automation scripts
@@ -1754,7 +1754,7 @@ paths:
             schema:
               type: object
               properties: *ref_32
-  /actionlog/:
+  /system/actionlog/:
     get:
       tags:
         - Action log

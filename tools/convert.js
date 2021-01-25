@@ -286,7 +286,7 @@ namespaces.forEach(({ path, namespace, className }) => {
   // Generate openAPI code for each endpoint group
   spec.forEach(e => {
     const tag = e.title
-    const basePath = e.path
+    const basePath = `/${namespace}${e.path}`
     const baseParams = e.parameters || {}
     let def = {}
     
