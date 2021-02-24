@@ -12,6 +12,7 @@ if (process.argv.length >= 3) {
 }
 
 const dst = `${__dirname}/../swagger`
+const serverDst = `${__dirname}/../${path}/docs`
 
 const namespaces = [
   {
@@ -393,7 +394,11 @@ namespaces.forEach(({ path, namespace, className }) => {
   try {
     // Save namespace file
     let yamlStr = yaml.safeDump(base);
+    // Write to /swagger
     fs.writeFileSync(`${dst}/${namespace}.yaml`, yamlStr, 'utf8')
+
+    // Write to corteza-server/docs
+    fs.writeFileSync(`${serverDst}/${namespace}.yaml`, yamlStr, 'utf8')
   } catch (err) {
     console.error(err)
   }
